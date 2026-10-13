@@ -7,18 +7,18 @@ h = np.array([12.575, 11.951, 11.264, 10.665, 10.022, 9.451, 8.907, 8.31,
               4.181, 3.434, 3.107, 2.76, 2.438, 2.168, 1.816, 1.66,
               1.421, 1.131, 0.949, 0.737])
 
-h0 = h[0]       # nivel inicial [cm]
-dh = 0.1        # cota de error de las alturas [cm] (tambien de h0)
-d1 = 5.987      # diametro del envase [cm]
-dd1 = 0.2       # cota de d1 [cm]
-d2 = 0.478      # diametro del orificio [cm]
-dd2 = 0.1       # cota de d2 [cm]
-g = 9.8         # gravedad [m/s^2]
-dg = 0.05       # cota de g [m/s^2]
+h0 = h[0]       
+dh = 0.1       
+d1 = 5.987      
+dd1 = 0.2       
+d2 = 0.478      
+dd2 = 0.1       
+g = 9.8         
+dg = 0.05       
 
 
 y = h / h0
-# y = h/h0  ->  dy = dh/h0 + h*dh0/h0^2 = (dh + y*dh)/h0
+
 dy = (dh + y * dh) / h0
 er_y = dy / y   # error relativo de y
 
@@ -35,8 +35,7 @@ def calcular_tf(h0_cm, d1_cm, d2_cm, g_ms2):
 
 tf = calcular_tf(h0, d1, d2, g)
 
-# tf es monotona en cada variable: los extremos se alcanzan en las
-# combinaciones h0 +- dh, d1 +- dd1, d2 +- dd2, g +- dg
+
 signos = [-1.0, 1.0]
 valores = []
 for a in signos:
