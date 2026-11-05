@@ -36,9 +36,9 @@ print("A1 [cm^2]:", A1, "+-", dA1)
 print("A2 [cm^2]:", A2, "+-", dA2)
 print()
 
-def calcular_tf(h0_cm, d1_cm, d2_cm, g_ms2):
+def calcular_tf(h0_cm, A1_cm2, A2_cm2, g_ms2):
     h0_m = h0_cm / 100.0
-    cociente = (d1_cm / d2_cm) ** 4      # A1^2 / A2^2
+    cociente = (A1_cm2 ** 2) / (A2_cm2 ** 2)
     return np.sqrt(2.0 * h0_m / g_ms2 * (cociente - 1.0))
 
 def propagar_dtf(h0_val):
@@ -49,8 +49,8 @@ def propagar_dtf(h0_val):
         for b in signos:
             for c in signos:
                 for e in signos:
-                    valores[k] = calcular_tf(h0_val + a * dh, d1 + b * dd1,
-                                             d2 + c * dd2, g + e * dg)
+                    valores[k] = calcular_tf(h0_val + a * dh, A1 + b * dA1,
+                                             A2 + c * dA2, g + e * dg)
                     k = k + 1
     valores_ord = np.sort(valores)
     return (valores_ord[15] - valores_ord[0]) / 2.0
@@ -76,7 +76,7 @@ for j in np.arange(0, t_agua.size, 1):
 print("Mediciones con error relativo < 5%: ", cant_menor_5_agua, "de", t_agua.size)
 print()
 
-tf_agua = calcular_tf(h0_agua, d1, d2, g)
+tf_agua = calcular_tf(h0_agua, A1, A2, g)
 dtf_agua = propagar_dtf(h0_agua)
 
 t_modelo_agua = tf_agua * factor
@@ -115,7 +115,7 @@ for j in np.arange(0, t_aceite.size, 1):
 print("Mediciones con error relativo < 5%:", cant_menor_5_aceite, "de", t_aceite.size)
 print()
 
-tf_aceite = calcular_tf(h0_aceite, d1, d2, g)
+tf_aceite = calcular_tf(h0_aceite, A1, A2, g)
 dtf_aceite = propagar_dtf(h0_aceite)
 
 t_modelo_aceite = tf_aceite * factor

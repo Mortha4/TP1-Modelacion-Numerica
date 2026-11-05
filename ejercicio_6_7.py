@@ -8,8 +8,13 @@ g = 9.8
 dg = 0.05
 dh = 0.2
 
-def calcular_tf(h0_cm, d1_cm, d2_cm, g_ms2):
-    return np.sqrt(2.0 * (h0_cm / 100.0) / g_ms2 * ((d1_cm / d2_cm) ** 4 - 1.0))
+A1 = np.pi * (d1 / 2.0) ** 2
+dA1 = (np.pi / 2.0) * d1 * dd1
+A2 = np.pi * (d2 / 2.0) ** 2
+dA2 = (np.pi / 2.0) * d2 * dd2
+
+def calcular_tf(h0_cm, A1_cm2, A2_cm2, g_ms2):
+    return np.sqrt(2.0 * (h0_cm / 100.0) / g_ms2 * ((A1_cm2 ** 2) / (A2_cm2 ** 2) - 1.0))
 
 def propagar_dtf(h0_val):
     signos = np.array([-1.0, 1.0])
@@ -19,8 +24,8 @@ def propagar_dtf(h0_val):
         for b in signos:
             for c in signos:
                 for e in signos:
-                    valores[k] = calcular_tf(h0_val + a * dh, d1 + b * dd1,
-                                             d2 + c * dd2, g + e * dg)
+                    valores[k] = calcular_tf(h0_val + a * dh, A1 + b * dA1,
+                                             A2 + c * dA2, g + e * dg)
                     k = k + 1
     valores_ord = np.sort(valores)
     return (valores_ord[15] - valores_ord[0]) / 2.0
@@ -52,7 +57,7 @@ y_agua = h_agua / h0_agua
 dy_agua = (dh / h0_agua) + (h_agua * dh) / (h0_agua ** 2)
 er_agua = dy_agua / y_agua
 
-tf_agua = calcular_tf(h0_agua, d1, d2, g)
+tf_agua = calcular_tf(h0_agua, A1, A2, g)
 dtf_agua = propagar_dtf(h0_agua)
 
 sel_agua = er_agua < 0.10
@@ -117,7 +122,7 @@ y_aceite = h_aceite / h0_aceite
 dy_aceite = (dh / h0_aceite) + (h_aceite * dh) / (h0_aceite ** 2)
 er_aceite = dy_aceite / y_aceite
 
-tf_aceite = calcular_tf(h0_aceite, d1, d2, g)
+tf_aceite = calcular_tf(h0_aceite, A1, A2, g)
 dtf_aceite = propagar_dtf(h0_aceite)
 
 sel_aceite = er_aceite < 0.10

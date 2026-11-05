@@ -1,11 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Parametros para Punto 5 (Torricelli teorico)
+# Parametros para Punto 5
 d1 = 5.987
 d2 = 0.478
 g = 9.8
 dh = 0.2
+
+A1 = np.pi * (d1 / 2.0) ** 2
+A2 = np.pi * (d2 / 2.0) ** 2
 
 # AGUA (30 mediciones, cada 0.6 s)
 t = np.array([0.0, 0.6, 1.2, 1.8, 2.4, 3.0, 3.6, 4.2, 4.8, 5.4,
@@ -77,14 +80,14 @@ p3 = aC + bC * t + cC * (t ** 2) + dC * (t ** 3)
 pexp = np.exp(aexp - bexp * t)
 
 # Punto 5: estimacion teorica ec. (1) y (2)
-tf = np.sqrt(2.0 * (h0 / 100.0) / g * ((d1 / d2) ** 4 - 1.0))
+tf = np.sqrt(2.0 * (h0 / 100.0) / g * ((A1 ** 2) / (A2 ** 2) - 1.0))
 p_teo = (1.0 - t / tf) ** 2
 
 # Error cuadratico medio (ECM) tomando en cuenta TODAS las mediciones
-ecm2 = np.sqrt(np.sum((y - p2) ** 2) / y.size)
-ecm3 = np.sqrt(np.sum((y - p3) ** 2) / y.size)
-ecmexp = np.sqrt(np.sum((y - pexp) ** 2) / y.size)
-ecm_teo = np.sqrt(np.sum((y - p_teo) ** 2) / y.size)
+ecm2 = np.sum((y - p2) ** 2) / y.size
+ecm3 = np.sum((y - p3) ** 2) / y.size
+ecmexp = np.sum((y - pexp) ** 2) / y.size
+ecm_teo = np.sum((y - p_teo) ** 2) / y.size
 
 plt.figure()
 plt.plot(t, y, 'rx', markersize=5, label='mediciones')
@@ -166,14 +169,14 @@ p3_2 = aC_2 + bC_2 * t2 + cC_2 * (t2 ** 2) + dC_2 * (t2 ** 3)
 pexp_2 = np.exp(aexp_2 - bexp_2 * t2)
 
 # Punto 5: estimacion teorica ec. (1) y (2)
-tf_2 = np.sqrt(2.0 * (h0_2 / 100.0) / g * ((d1 / d2) ** 4 - 1.0))
+tf_2 = np.sqrt(2.0 * (h0_2 / 100.0) / g * ((A1 ** 2) / (A2 ** 2) - 1.0))
 p_teo_2 = (1.0 - t2 / tf_2) ** 2
 
 # Error cuadratico medio (ECM) tomando en cuenta TODAS las mediciones
-ecm2_2 = np.sqrt(np.sum((y2 - p2_2) ** 2) / y2.size)
-ecm3_2 = np.sqrt(np.sum((y2 - p3_2) ** 2) / y2.size)
-ecmexp_2 = np.sqrt(np.sum((y2 - pexp_2) ** 2) / y2.size)
-ecm_teo_2 = np.sqrt(np.sum((y2 - p_teo_2) ** 2) / y2.size)
+ecm2_2 = np.sum((y2 - p2_2) ** 2) / y2.size
+ecm3_2 = np.sum((y2 - p3_2) ** 2) / y2.size
+ecmexp_2 = np.sum((y2 - pexp_2) ** 2) / y2.size
+ecm_teo_2 = np.sum((y2 - p_teo_2) ** 2) / y2.size
 
 plt.figure()
 plt.plot(t2, y2, 'rx', markersize=5, label='mediciones')
